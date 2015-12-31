@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>Welcome to CodeIgniter</title>
 	<?php $this->load->view('script_lib')?>
+	<script src="<?php echo base_url('/js/excellentexport.min.js')?>"></script>
 	<style type="text/css">
    		body { background: #eee; }   		
 	</style>
@@ -19,9 +20,10 @@
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exportModel">
 		 		 匯出Excel
 			</button>
-			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/form/form_table")?>'">離開</button>
+			<a download="<?php print_r($results['title']) ?>.xls" href="#" onclick="return ExcellentExport.excel(this, 'result_table', 'Sheet Name Here');"><button class="btn btn-primary" >匯出 Excel</button></a>
+			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/form/form_menu")?>'">離開</button>
 		</div>
-		<table class="table  table-striped">
+		<table class="table  table-striped" id='result_table'>
 			<thead>
 				<tr>
 					<?php
