@@ -116,13 +116,13 @@ $(document).ready(function(){
 			console.log(da);
 	      
 			alert(JSON.stringify(da));
-	    //     $.post( $("form").attr('action'), da, function(result) {
-	    //          // alert(result);
+	        $.post( $("form").attr('action'), da, function(result) {
+	             // alert(result);
 
-	    //     }).done(function( data ) {
-		   //  	//alert(data);
-		   //  	window.location.href = "<?php echo base_url('form/form_menu')?>";
-		  	// });
+	        }).done(function( data ) {
+		    	//alert(data);
+		    	window.location.href = "<?php echo base_url('form/form_menu')?>";
+		  	});
 	        
 
 	}

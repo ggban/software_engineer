@@ -264,7 +264,7 @@ class Get_db extends CI_Model{
 	
 	}
 
-	function insert_user_hash($form_id,$email)
+	function insert_user_hash($form_id)
 	{
 		// insert timestseramp and user_hash
 		$user_hash=$this->ramdom_hash();
@@ -276,7 +276,7 @@ class Get_db extends CI_Model{
 		$data = array(
 			   'form_id' => $form_id ,
 			   'user_hash' => $user_hash ,
-			   'user_email' =>$email,
+			  // 'user_email' =>$email,
 			);
 		$this->db->trans_start();
 		$this->db->insert('fillin_timestamp', $data); 

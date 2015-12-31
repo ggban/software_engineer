@@ -38,7 +38,7 @@
 		</div>	
 
 	</div>
-	
+	<!--
 	<div class='container col-md-12' id="subdiv">
 		<div class="form-group">
 			
@@ -49,9 +49,9 @@
 		</div>
 
 	</div>
-	
+	-->
 	<div >
-		<button  id="submit"   class="btn btn-info" >儲存</button> 
+		<button  id="submit"   class="btn btn-info" <?php if(!$submit_able)echo 'disabled="disabled"'?>>送出</button> 
 	</div>	
 
   
@@ -139,14 +139,14 @@ $(document).ready(function(){
 	         
 
 	         });
-	console.log(da);
+	//console.log(da);
 	        
-	      //  <?php if($submit_able){?>
-		   //      $.post( $("form").attr('action'), da, function(result) {
-		 //             alert(result);
-		 //        });
-		   //     
-	      //  <?php } ?>
+	       <?php if($submit_able){?>
+		        $.post( $("form").attr('action'), da, function(result) {
+		             //alert(result);
+		        });
+		       
+	       <?php } ?>
 
 	}
 	
@@ -238,8 +238,8 @@ $(document).ready(function(){
 		var da=new Object();
 
 		da['hash']=hash;
-		da['email']=$("#email").val();
-		da['sub']=$("#sub_confirm").prop("checked");
+		//da['email']=$("#email").val();
+		//da['sub']=$("#sub_confirm").prop("checked");
 	         $("#question_area").find(".question").each(function(i){
 	         	
 	         	switch (question_type_ary[i])
@@ -283,7 +283,7 @@ $(document).ready(function(){
               //alert("感謝你把問卷填好，資料已上傳了！");
              
          }).done(function( data ) {
-		    alert(data);
+		    //alert(data);
 		    window.location.href = "<?php echo base_url('form/fill_form_menu')?>";
 		  });;
          return false; //cancel original submit

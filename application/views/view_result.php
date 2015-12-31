@@ -19,6 +19,7 @@
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exportModel">
 		 		 匯出Excel
 			</button>
+			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/form/form_table")?>'">離開</button>
 		</div>
 		<table class="table  table-striped">
 			<thead>
@@ -62,5 +63,6 @@
 		</table>
 			
 	</div>
+
 </body>
 </html>

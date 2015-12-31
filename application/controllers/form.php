@@ -29,8 +29,12 @@ class Form extends CI_Controller {
 		}
 	public function index()
 	{
-		//$this->load->helper('form');
-		$this->form_menu();
+		$this->auth_check('user');
+ 		//print_r($this->session->all_userdata());	
+		$data['results']=$this->get_db->get_all_form();
+		$data['title']="首頁";
+		$data['content']="歡迎來到CFFS系統";
+		$this->load->view('admin_temp',$data);
 	}
 
 	public function change_passwd(){
@@ -183,7 +187,7 @@ class Form extends CI_Controller {
 
 		$form_data = $this->get_db->get_form_data($hash);
 		//print_r($form_data);
-		if($form_data==null||$this->get_db->check_form_expired($hash)) echo "no data";
+		if($form_data==null||$this->get_db->check_form_expired($hash)) show_404();
 		
 		$data["form_data"]=$form_data;
 		$data["hash"]=$hash;
@@ -203,18 +207,18 @@ class Form extends CI_Controller {
 			//echo $form_id;
 			//echo $_POST['da']['email'];
 			//subscribe check 
-			if($this->get_db->check_duplicate_fill($form_id,$_POST['da']['email']))
-				{
-					echo "您已填寫過此表格";
-					return ;
-				}
+			// if($this->get_db->check_duplicate_fill($form_id,$_POST['da']['email']))
+			// 	{
+			// 		echo "您已填寫過此表格";
+			// 		return ;
+			// 	}
 				
-			if($_POST['da']['sub']=="true")
-				$this->get_db->insert_subsribe(array('email' => $_POST['da']['email']));
+			// if($_POST['da']['sub']=="true")
+			// 	$this->get_db->insert_subsribe(array('email' => $_POST['da']['email']));
 			
 			//insert timestamp
 
-			$user_hash=$this->get_db->insert_user_hash($form_id,$_POST['da']['email']);
+			$user_hash=$this->get_db->insert_user_hash($form_id);
 			
 			if($user_hash!=null)
 			{
@@ -255,12 +259,12 @@ class Form extends CI_Controller {
 		if($hash=='')
 			$hash='3JTU7GD5W6';
 		else 
-			$this->auth_check('admin');
+			$this->auth_check('user');
 		
 		$data['results']=$this->get_db->get_form_result($hash);	
 		if($data['results']!=null)
 			$this->load->view('view_result',$data);
-		else redirect('/form/restricted');
+		else show_404();
 	}
 
 	
@@ -272,11 +276,11 @@ class Form extends CI_Controller {
 		{
 			case 'user':
 				if(!$this->session->userdata('is_logged'))
-					redirect('/form/restricted');
+					redirect('/login');
 				break;
 			case 'admin':
 				if(!$this->session->userdata('is_admin'))
-					redirect('/form/restricted');
+					redirect('/login');
 
 				break	;
 

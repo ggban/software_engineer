@@ -36,7 +36,7 @@
 							  <option value="3">單選題</option>
 							  <option value="5">單選題(下拉式)</option>
 							  <option value="4">複選題</option>
-							  <option value="6">檔案上傳</option>
+							 <!-- <option value="6">檔案上傳</option>-->
 							  
 							</select>
 						

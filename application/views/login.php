@@ -15,7 +15,7 @@
 	
 				<div class="form-group row <?php if (form_error('id')){echo "has-error has-feedback";}?>"> 
 					<div class="col-sm-9">
-						<input type="text" class="form-control " id="id" placeholder="學號" name="id">
+						<input type="text" class="form-control " id="id" placeholder="帳號" name="id">
 					</div>
 					<label for="inputEmail3" class="col-sm-6 control-label"><?php echo form_error('id',$error_box[0],$error_box[1]);?></label>
 				</div>
@@ -33,7 +33,7 @@
 		$data= array(
 				'name' => 'login_submit',
 				'class' => 'col-sm-offset-9 btn btn-primary',
-				'value' => 'Login',
+				'value' => '登入',
 				'id' => 'login_submit',
 				
 				
