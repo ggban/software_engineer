@@ -26,7 +26,7 @@ fieldset {
 <div class="col-md-9 col-sm-6 col-xs-12">
 	
 
-	<form role="form" id="form_index" class="form-horizontal" method="post" action=<?php echo base_url("user/edit_group");?> onSubmit="alert('編輯資料已上傳');" >
+	<form role="form" id="form_index" class="form-horizontal" method="post" action=<?php echo base_url("accountController/edit_group");?> onSubmit="alert('編輯資料已上傳');" >
 		<div id='page_devider' style='height: 30px;'></div>
 		<input type='hidden' value="<?php echo $id?>" name='id' />
 		<div>		
@@ -43,7 +43,7 @@ fieldset {
 
 		<div >
 			<input  id="submit" type="submit" class="btn btn-info" value="儲存"> 
-			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/user/group_table")?>'">離開</button>
+			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/accountController/group_table")?>'">離開</button>
 		</div>	
 	</form>
   	

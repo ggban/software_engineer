@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Form extends CI_Controller {
+class FormController extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,8 +21,11 @@ class Form extends CI_Controller {
 			parent::__construct();
 			$this->load->helper(array('url','date','form'));
 			$this->load->library('session');
-			$this->load->model('get_db');
-			$this->load->model('model_user');
+			$this->load->model('form');
+			$this->load->model('answer');
+			$this->load->model('fillList');
+			$this->load->model('user');
+			$this->load->model('group');
 			//$this->load->library('session');
 
 			
@@ -31,7 +34,7 @@ class Form extends CI_Controller {
 	{
 		$this->auth_check('user');
  		//print_r($this->session->all_userdata());	
-		$data['results']=$this->get_db->get_all_form();
+		$data['results']=$this->form->get_all_form();
 		$data['title']="首頁";
 		$data['content']="歡迎來到CFFS系統";
 		$this->load->view('admin_temp',$data);
@@ -46,7 +49,7 @@ class Form extends CI_Controller {
 		$this->form_validation->set_rules('confirm_password','Confrim Password','required|md5');
 		if ($this->form_validation->run()){
 			$passwd =$this->input->post('new_password');
-			$this->model_user->change_passwd($data['id'],$passwd);
+			$this->user->change_passwd($data['id'],$passwd);
 			echo "Password has been change!!";
 			}
 		else
@@ -60,7 +63,7 @@ class Form extends CI_Controller {
 	 }
 
 	public function check_passwd(){
-	 	if($this->model_user->can_log_in()){return true;}
+	 	if($this->user->can_log_in()){return true;}
 		else {$this->form_validation->set_message('check_passwd','Incorrect old password.');}
 		return false;
 	 
@@ -70,7 +73,7 @@ class Form extends CI_Controller {
 	{
 		$this->auth_check('user');
  		//print_r($this->session->all_userdata());	
-		$data['results']=$this->get_db->get_all_form();
+		$data['results']=$this->form->get_all_form();
 		$data['title']="表單列表";
 		$data['content']=$this->load->view('form_menu',$data,true);
 		$this->load->view('admin_temp',$data);
@@ -80,7 +83,7 @@ class Form extends CI_Controller {
 	public function fill_form_menu()
 	{
 
-		$data['results']=$this->get_db->get_fillable_form();
+		$data['results']=$this->form->get_fillable_form();
 		$this->load->view('fill_form_menu',$data);
 
 	}
@@ -96,7 +99,7 @@ class Form extends CI_Controller {
 		$this->auth_check('user');
 		$deleted = $_POST["hash"];
 		echo $deleted;
-		$this->get_db->delete_form($deleted);
+		$this->form->delete_form($deleted);
 	}
 
 	public function edit_view_form()
@@ -104,7 +107,7 @@ class Form extends CI_Controller {
 		$this->auth_check('user');
 		$type=$_POST["ev_type"];
 		$target = $_POST["hash"];
-		$data["form_data"]=$this->get_db->get_form_data($target);
+		$data["form_data"]=$this->form->get_form_data($target);
 		$data["hash"]=$target;
 		$data["submit_able"]=false;
 		switch($type)
@@ -126,10 +129,10 @@ class Form extends CI_Controller {
 	{
 		$this->auth_check('user');
 		$title=$_POST['title'];
-		$rand=$this->get_db->ramdom_hash();
-		while($this->get_db->hash_exist($rand))
+		$rand=$this->form->ramdom_hash();
+		while($this->form->hash_exist($rand))
 			{
-				$rand=$this->get_db->ramdom_hash();
+				$rand=$this->form->ramdom_hash();
 			}
 		
 		$form_data = array(	
@@ -139,7 +142,7 @@ class Form extends CI_Controller {
 				'form_hash'	=> 	$rand,
 							);
 		//echo $title;
-		$this->get_db->insert_new_form($form_data);
+		$this->form->insert_new_form($form_data);
 		
 	}
 	
@@ -157,7 +160,7 @@ class Form extends CI_Controller {
 				'form_data' => json_encode($form_dat),	
 							);
 		
-		$this->get_db->update_form($form_data,$rand);
+		$this->form->update_form($form_data,$rand);
 		
 	}
 
@@ -171,7 +174,7 @@ class Form extends CI_Controller {
 			'expired_date' => $_POST['expired'],	
 							);
 		
-		$this->get_db->update_form($form_data,$_POST['hash']);
+		$this->form->update_form($form_data,$_POST['hash']);
 		
 	}
 
@@ -185,9 +188,9 @@ class Form extends CI_Controller {
 
 		$this->form_validation->set_rules('da', 'da','required');
 
-		$form_data = $this->get_db->get_form_data($hash);
+		$form_data = $this->form->get_form_data($hash);
 		//print_r($form_data);
-		if($form_data==null||$this->get_db->check_form_expired($hash)) show_404();
+		if($form_data==null||$this->form->check_form_expired($hash)) show_404();
 		
 		$data["form_data"]=$form_data;
 		$data["hash"]=$hash;
@@ -203,7 +206,7 @@ class Form extends CI_Controller {
 		else
 		{
 			
-			$form_id=$this->get_db->hash_to_form_id($_POST['da']['hash']);
+			$form_id=$this->form->hash_to_form_id($_POST['da']['hash']);
 			//echo $form_id;
 			//echo $_POST['da']['email'];
 			//subscribe check 
@@ -218,7 +221,7 @@ class Form extends CI_Controller {
 			
 			//insert timestamp
 
-			$user_hash=$this->get_db->insert_user_hash($form_id);
+			$user_hash=$this->fillList->insert_user_hash($form_id);
 			
 			if($user_hash!=null)
 			{
@@ -235,7 +238,7 @@ class Form extends CI_Controller {
 						   'ans_value' => $value['ans'],
 						);
 						//print_r($data);
-						$this->get_db->fill_form($data);
+						$this->answer->fill_form($data);
 					}
 					
 				}
@@ -243,14 +246,9 @@ class Form extends CI_Controller {
 			echo "感謝你把問卷填好，資料已上傳了";
 
 			return ;
-			//print_r($form_id);
-			//$this->load->view('form_menu');
-			//redirect('/form/fill_form_menu');
+
 			
 		}
-		
-
-
 	}
 
 
@@ -261,13 +259,11 @@ class Form extends CI_Controller {
 		else 
 			$this->auth_check('user');
 		
-		$data['results']=$this->get_db->get_form_result($hash);	
+		$data['results']=$this->answer->get_form_result($hash);	
 		if($data['results']!=null)
 			$this->load->view('view_result',$data);
 		else show_404();
 	}
-
-	
 
 
 	private function auth_check($allow_lvl){

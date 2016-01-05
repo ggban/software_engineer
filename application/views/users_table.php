@@ -30,13 +30,13 @@
 </script>
 		<?php // Change the css classes to suit your needs    
 			$attributes = array( 'id' => 'edit_form');
-			echo form_open('user/edit_user',$attributes);
+			echo form_open('accountController/edit_user',$attributes);
 		?>
 			
 		 	<input type="hidden" name="id" id="id">
 		<?php echo form_close();?>
 <div class="col-sm-9"> 
-		<a href="<?php echo base_url('user/create_user')?>" class="btn btn-info" role="button">新增使用者</a>
+		<a href="<?php echo base_url('accountController/create_user')?>" class="btn btn-info" role="button">新增使用者</a>
 		<div id='page_devider container' style='height: 15px;'></div>
 		<table class="table table-bordered table-striped">
 			<thead>

@@ -12,7 +12,7 @@
 <body bgcolor="#E6E6FA">
 	<div id='page_devider' style='height: 30px;'></div>
 <div class="container thumbnail   col-sm-offset-3 col-sm-6">
-	<form role="form" id="form_index" action=<?php echo base_url("form/form_fill/".$hash);?>>
+	<form role="form" id="form_index" action=<?php echo base_url("formController/form_fill/".$hash);?>>
 		<input type='hidden' id='fill_data'>
 	
 	<div id='page_devider' style='height: 30px;'></div>
@@ -279,12 +279,12 @@ $(document).ready(function(){
 	         
 
 	         });
-         $.post( "<?php echo base_url("form/form_fill/".$hash);?>", {da : da}, function(result) {
-              //alert("感謝你把問卷填好，資料已上傳了！");
+         $.post( "<?php echo base_url("formController/form_fill/".$hash);?>", {da : da}, function(result) {
+              alert("感謝你把問卷填好，資料已上傳了！");
              
          }).done(function( data ) {
 		    //alert(data);
-		    window.location.href = "<?php echo base_url('form/fill_form_menu')?>";
+		    window.location.href = "<?php echo base_url('formController/fill_form_menu')?>";
 		  });;
          return false; //cancel original submit
      });

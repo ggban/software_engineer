@@ -35,7 +35,7 @@
 							?>
 							<tr>
 									<td  valign="middle">
-										<a href="<?php echo base_url('form/form_fill/'.$row->form_hash)?>"><b><?php echo $row->form_title?></b></a>
+										<a href="<?php echo base_url('formController/form_fill/'.$row->form_hash)?>"><b><?php echo $row->form_title?></b></a>
 									</td>
 									
 									

@@ -77,8 +77,8 @@
 				url: "./form_date_update",
 				data:{
 					hash: hash,
-					start: '',
-					expired: ''
+					start: null,
+					expired: null
 				},
 				success: function(){
 					document.location.reload(true);
@@ -108,13 +108,13 @@
 	<div id="container" class=" ">
 		<?php // Change the css classes to suit your needs    
 			$attributes = array( 'id' => 'edit_view');
-			echo form_open('form/edit_view_form',$attributes);
+			echo form_open('formController/edit_view_form',$attributes);
 		?>
 			<input type="hidden" name="ev_type" id="ev_type">
 		 	<input type="hidden" name="hash" id="hash">
 		<?php echo form_close();?>	
 
-		<a href="<?php echo base_url("/form/create_form")?>" class="btn btn-info" role="button">建立新表單</a>
+		<a href="<?php echo base_url("/formController/create_form")?>" class="btn btn-info" role="button">建立新表單</a>
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
@@ -135,7 +135,7 @@
 							<tr>
 									<td  valign="middle"><?php echo $row->form_title?></td>
 									<td  valign="middle" >
-												<?php if($row->start_date=='' && $row->expired_date==''){ ?>
+												<?php if(($row->start_date==''|| $row->start_date=='0000-00-00 00:00:00') && ($row->expired_date==''||$row->expired_date=='0000-00-00 00:00:00')){ ?>
 													<img src="<?php echo base_url('/images/file_edit.png')?>" width="15px" height="15px" style="cursor:pointer;" title="編輯" onclick="edit_view('edit',<?php echo "'".$row->form_hash."'"?>)">&#160 
 													<img src="<?php echo base_url('/images/file_view.png')?>" width="15px" height="15px" style="cursor:pointer;" title="檢視" type="button" onclick="edit_view('view',<?php echo "'".$row->form_hash."'"?>)" >&#160 
 													<!--<img src="<?php echo base_url('/images/copy_icon.png')?>" width="15px" height="15px" style="cursor:pointer;" title="複製" type="button" onclick="copy_click(<?php echo "'".$row->form_hash."'"?>)" >&#160 -->													
@@ -145,9 +145,11 @@
 											 	<?php }else{ ?>
 											 			<img src="<?php echo base_url('/images/file_view.png')?>" width="15px" height="15px" style="cursor:pointer;" title="檢視" type="button" onclick="edit_view('view',<?php echo "'".$row->form_hash."'"?>)" >&#160 	
 													<!--	<img src="<?php echo base_url('/images/copy_icon.png')?>" width="15px" height="15px" style="cursor:pointer;" title="複製" type="button" onclick="copy_click(<?php echo "'".$row->form_hash."'"?>)" >&#160 -->																									 			
-														<img src="<?php echo base_url('/images/result_view.png')?>" width="15px" height="15px" style="cursor:pointer;" title="結果" onclick="javascript:location.href='<?php echo base_url("/form/form_check/".$row->form_hash)?>'">&#160 
+														<img src="<?php echo base_url('/images/result_view.png')?>" width="15px" height="15px" style="cursor:pointer;" title="結果" onclick="javascript:location.href='<?php echo base_url("/reportController/form_check/".$row->form_hash)?>'">&#160 
 														<img src="<?php echo base_url('/images/file_submit.png')?>" width="15px" height="15px" style="cursor:pointer;" title="發布" type="button" data-toggle="modal" data-target="#submitModel" onclick="submit_click(<?php echo "'".$row->form_hash."','".$row->form_title."','".$row->start_date."','".$row->expired_date."'"?>)">&#160 
 														<img src="<?php echo base_url('/images/file_delete.png')?>" width="15px" height="15px" style="cursor:pointer;" title="刪除" type="button" onclick="delete_click(<?php echo "'".$row->form_hash."'"?>)">&#160 
+														<img src="<?php echo base_url('/images/disable_bor.png')?>" width="15px" height="15px" style="cursor:pointer;" title="取消發布" type="button" onclick="disable_submit(<?php echo "'".$row->form_hash."'"?>)">&#160 
+													
 													<?php } 
 													date_default_timezone_set('Asia/Taipei');
 														$date=date_create($row->expired_date);
@@ -155,7 +157,6 @@
 														if($date>$now)
 														{ 	
 															?>
-															<img src="<?php echo base_url('/images/disable_bor.png')?>" width="15px" height="15px" style="cursor:pointer;" title="取消發布" type="button" onclick="disable_submit(<?php echo "'".$row->form_hash."'"?>)">&#160 
 															<?php 
 														}
 													?>				

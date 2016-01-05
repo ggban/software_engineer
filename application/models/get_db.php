@@ -83,20 +83,6 @@ class Get_db extends CI_Model{
 		$this->db->trans_complete();
 	}
 
-	function insert_subsribe($data)
-	{
-		$this->db->trans_start();
-		$query = $this->db->get_where('subscribe_table', $data);
-		$this->db->trans_complete();
-		
-		if($query->num_rows()==0)
-		{
-			$this->db->trans_start();
-			$this->db->insert('subscribe_table', $data); 
-			$this->db->trans_complete();
-		}
-	}
-
 	function get_form_data($hash)
 	{
 		$this->db->trans_start();

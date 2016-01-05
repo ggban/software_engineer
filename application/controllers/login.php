@@ -10,7 +10,8 @@ class login extends CI_Controller{
 		$this->load->helper('form');
 		$this->load->helper('url');
 		 $this->load->library('session');
-		$this->load->model('model_user');
+		$this->load->model('user');
+		$this->load->model('group');
 	}
 	
 	public function index(){
@@ -44,14 +45,14 @@ class login extends CI_Controller{
 			$data = array(
 				'id' => $this->input->post('id'),
 				'is_logged' => 1, 
-				'is_admin' =>$this->model_user->is_admin($this->input->post('id')),
-				'group_index'=>$this->model_user->get_group_indexBy_user($this->input->post('id')),
-				'display_name' =>$this->model_user->id_info($this->input->post('id'),"display_name"),
+				'is_admin' =>$this->user->is_admin($this->input->post('id')),
+				'group_index'=>$this->user->get_group_indexBy_user($this->input->post('id')),
+				'display_name' =>$this->user->id_info($this->input->post('id'),"display_name"),
 				);
 		
 				$this->session->set_userdata($data);		
 	
-			redirect('form');
+			redirect('formController');
 			}
 		else{	
 			$this->load->view("header");
@@ -68,9 +69,9 @@ class login extends CI_Controller{
 
 	//!!!to check the login is valid or not
 	public function validate_credentials(){
-		$this->load->model('model_user');
 		
-		if($this->model_user->can_log_in()){return true;}
+		
+		if($this->user->can_log_in()){return true;}
 		else {$this->form_validation->set_message('validate_credentials','Incorrect username/password.');}
 	
 		return false;

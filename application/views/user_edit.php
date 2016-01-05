@@ -18,7 +18,7 @@ foreach($user_row->result() as $user){
 <div class="col-md-9 col-sm-6 col-xs-12">
 
 
-	<form role="form" id="form_index" class="form-horizontal" method="post" action=<?php echo base_url("user/edit_user");?> onSubmit="alert('編輯資料已上傳');" >
+	<form role="form" id="form_index" class="form-horizontal" method="post" action=<?php echo base_url("accountController/edit_user");?> onSubmit="alert('編輯資料已上傳');" >
 		<div id='page_devider' style='height: 30px;'></div>
 			<input type='hidden' value="<?php echo $index?>" name='id' />
 		<div class="form-group">		
@@ -54,7 +54,7 @@ foreach($user_row->result() as $user){
 		<div id='page_devider' style='height: 30px;'></div>
 		<div >
 			<input  id="submit" type="submit" class="btn btn-info" value="儲存"> 
-			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/user/users_table")?>'">離開</button>
+			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/accountController/users_table")?>'">離開</button>
 		</div>	
 	</form>
   	

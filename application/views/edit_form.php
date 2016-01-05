@@ -11,7 +11,7 @@
 </head>
 <body bgcolor="#E6E6FA">
 <div class="container">
-	<form role="form" id="form_index" class="form-horizontal" action=<?php echo base_url("form/form_update");?>>
+	<form role="form" id="form_index" class="form-horizontal" action=<?php echo base_url("formController/form_update");?>>
 	<div id='page_devider' style='height: 30px;'></div>
 	<div class="thumbnail ">
  		<div id="hidden_question" style="display:none" class="hiddenque">
@@ -40,7 +40,7 @@
 	<div id='page_devider' style='height: 30px;'></div>
 	<div >
 		<button  id="submit" type="button" class="btn btn-info" onclick="submit_click()">存儲</button> 
-		<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/form/form_menu")?>'">離開</button>
+		<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/formController/form_menu")?>'">離開</button>
 	</div>	
 
   </form>
@@ -137,11 +137,13 @@ $(document).ready(function(){
 
 	         });
 
-	        
-
 	         $.post( $("form").attr('action'), da, function(result) {
-	              alert(result);
-	         });
+	             // alert(result);
+
+	        }).done(function( data ) {
+		    	//alert(data);
+		    	window.location.href = "<?php echo base_url('formController/form_menu')?>";
+		  	});
 	        
 
 	}

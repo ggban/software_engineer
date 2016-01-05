@@ -17,11 +17,8 @@
 	<div id='page_devider' style='height: 30px;'></div>
 	<div id="container" class="container thumbnail">
 		<div id='export_div' align='right'>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exportModel">
-		 		 匯出Excel
-			</button>
 			<a download="<?php print_r($results['title']) ?>.xls" href="#" onclick="return ExcellentExport.excel(this, 'result_table', 'Sheet Name Here');"><button class="btn btn-primary" >匯出 Excel</button></a>
-			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/form/form_menu")?>'">離開</button>
+			<button type="button" class="btn btn-default" onclick="location.href='<?php echo base_url("/formController/form_menu")?>'">離開</button>
 		</div>
 		<table class="table  table-striped" id='result_table'>
 			<thead>

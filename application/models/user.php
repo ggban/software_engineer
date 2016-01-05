@@ -1,6 +1,6 @@
 <?php
 //!!!model to get the user's personal data ,dont include certification data
-class Model_user extends CI_Model{
+class User extends CI_Model{
 
 	function __construct()
 	{
@@ -141,48 +141,8 @@ class Model_user extends CI_Model{
 		$this->db->delete('users', array('user_index' => $index)); 
 		$this->db->trans_complete();
 	}
-	function get_group_notAdmin()
-	{
+	
 
-		$this->db->trans_start();
-		$this->db->from('group_table');
-		$this->db->where_not_in('group_index', '1');
-
-		//$this->db->order_by('newslatter_index desc'); 
-		$query = $this->db->get();
-		$this->db->trans_complete();
-		if($query->num_rows()>0)
-			return  $query;
-		return null;
-
-	}
-	function get_group()
-	{
-
-		$this->db->trans_start();
-		$this->db->from('group_table');
-		$query = $this->db->get();
-		$this->db->trans_complete();
-		if($query->num_rows()>0)
-			return  $query;
-		return null;
-
-	}
-	function get_group_row($id)
-	{
-
-		$this->db->trans_start();
-		$this->db->from('group_table');
-		$this->db->where('group_index', $id);
-
-		//$this->db->order_by('newslatter_index desc'); 
-		$query = $this->db->get();
-		$this->db->trans_complete();
-		if($query->num_rows()>0)
-			return  $query;
-		return null;
-
-	}
 
 	public function get_group_indexBy_user($id)
 	{
@@ -195,40 +155,6 @@ class Model_user extends CI_Model{
 			
 		}
 		return false;
-
-	}
-
-	function insert_group($data)
-	{
-
-		$this->db->trans_start();
-		$this->db->insert('group_table', $data); 
-		
-		if ($this->db->affected_rows() == '1')
-		{
-			$this->db->trans_complete();
-			return TRUE;
-		}
-		$this->db->trans_complete();
-		return FALSE;
-
-	}
-	function update_group($index,$data)
-	{
-
-		$this->db->trans_start();
-		$this->db->where('group_index', $index);
-		$this->db->update('group_table', $data); 
-		$this->db->trans_complete();
-		return true;
-	}
-
-	function delete_group($id)
-	{
-		
-		$this->db->trans_start();
-		$this->db->delete('group_table', array('group_index' => $id)); 
-		$this->db->trans_complete();
 
 	}
 	//!!!below are the functions that are not used

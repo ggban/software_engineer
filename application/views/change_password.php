@@ -4,7 +4,7 @@
 		<div >
 			<?php
 				$attributes = array('class' => 'form-horizontal', 'id' => '' , 'class'=>"form-signin" , 'role'=>'form');
-				echo form_open('form/change_passwd',$attributes);
+				echo form_open('formController/change_passwd',$attributes);
 				$error_box=array('<div class="glyphicon glyphicon-remove form-control-feedback" >','</div>')
 				?>
 				<p><?php if(validation_errors()){echo "修改密碼失敗";}?></p>

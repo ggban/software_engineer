@@ -22,8 +22,11 @@ class AccountController extends CI_Controller {
 			$this->load->helper(array('url','date','form'));
 			$this->load->library('session');
 			$this->load->library('form_validation');
-			$this->load->model('get_db');
-			$this->load->model('model_user');
+			$this->load->model('form');
+			$this->load->model('answer');
+			$this->load->model('fillList');
+			$this->load->model('user');
+			$this->load->model('group');
 			//$this->load->library('session');
 
 			
@@ -43,7 +46,7 @@ class AccountController extends CI_Controller {
 		$this->form_validation->set_rules('confirm_password','Confrim Password','required|md5');
 		if ($this->form_validation->run()){
 			$passwd =$this->input->post('new_password');
-			$this->model_user->change_passwd($data['id'],$passwd);
+			$this->user->change_passwd($data['id'],$passwd);
 			echo "Password has been change!!";
 			}
 		else
@@ -57,7 +60,7 @@ class AccountController extends CI_Controller {
 	 }
 
 	public function check_passwd(){
-	 	if($this->model_user->can_log_in()){return true;}
+	 	if($this->user->can_log_in()){return true;}
 		else {$this->form_validation->set_message('check_passwd','Incorrect old password.');}
 		return false;
 	 
@@ -68,7 +71,7 @@ class AccountController extends CI_Controller {
 
 		$this->auth_check('admin');
 
-		$item['results']=$this->model_user->get_group();
+		$item['results']=$this->group->get_group();
 		$data['content']=$this->load->view('group_table',$item,true);
 		$data['title']="群組列表";
 		$this->load->view('admin_temp',$data);
@@ -100,9 +103,9 @@ class AccountController extends CI_Controller {
 								'group_detial' => set_value('group_detial'),
 						);			
 				
-				if ($this->model_user->insert_group($form_data) == TRUE) // the information has therefore been successfully saved in the db
+				if ($this->group->insert_group($form_data) == TRUE) // the information has therefore been successfully saved in the db
 				{
-						redirect('user/group_table');
+						redirect('accountController/group_table');
 				}
 				else //!!!if failed to update DB 
 				{
@@ -118,7 +121,7 @@ class AccountController extends CI_Controller {
 		$index=$_POST["id"];
 		$this->form_validation->set_rules('group_name', 'Group name', 'required');
 		$this->form_validation->set_rules('group_detial', 'Group detial', 'required');	
-		$data['group_row']=$this->model_user->get_group_row($index);
+		$data['group_row']=$this->group->get_group_row($index);
 		if (!$this->form_validation->run()) // validation hasn't been passed
 			{
 				
@@ -134,9 +137,9 @@ class AccountController extends CI_Controller {
 								'group_name' => set_value('group_name'),
 								'group_detial' => set_value('group_detial'),
 						);							
-				if ($this->model_user->update_group($index,$form_data)) // the information has therefore been successfully saved in the db
+				if ($this->group->update_group($index,$form_data)) // the information has therefore been successfully saved in the db
 					{		//print_r($file_data);
-						redirect('user/group_table');	
+						redirect('accountController/group_table');	
 					}
 				else //!!!if failed to update DB 
 					{
@@ -155,14 +158,14 @@ class AccountController extends CI_Controller {
 	{
 		$this->auth_check('admin');
 		$id = $_POST["id"];
-		$this->model_user->delete_group($id);
+		$this->group->delete_group($id);
 	}
 
 	public function users_table()
 	{
 		$this->auth_check('admin');
 
-		$item['results']=$this->model_user->get_users();
+		$item['results']=$this->user->get_users();
 		$data['content']=$this->load->view('users_table',$item,true);
 		$data['title']="使用者列表";
 		$this->load->view('admin_temp',$data);
@@ -184,7 +187,7 @@ class AccountController extends CI_Controller {
 		if (!$this->form_validation->run()) // validation hasn't been passed
 		{	
 			
-			$row['group_data']=$this->model_user->get_group();
+			$row['group_data']=$this->group->get_group();
 			$data['content']=$this->load->view('user_create',$row,true);
 			$data['title']="新增使用者";
 			$this->load->view('admin_temp',$data);
@@ -199,16 +202,16 @@ class AccountController extends CI_Controller {
 								'group_index' => set_value('group_id'),
 								'password' =>  set_value('password'),
 						);	
-				if($this->model_user->user_exist(set_value('user_id')))
+				if($this->user->user_exist(set_value('user_id')))
 				{
 					header("Content-Type:text/html; charset=utf-8");
 					echo "帳號已被使用";
 					return ;
 				}		
 						
-				if ($this->model_user->insert_user($form_data) == TRUE) // the information has therefore been successfully saved in the db
+				if ($this->user->insert_user($form_data) == TRUE) // the information has therefore been successfully saved in the db
 				{
-						redirect('user/users_table');
+						redirect('accountController/users_table');
 				}
 				else //!!!if failed to update DB 
 				{
@@ -229,11 +232,11 @@ class AccountController extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 		//$data['year']=$this->student_info("year");
-		$row['user_row']=$this->model_user->get_user_row($index);
+		$row['user_row']=$this->user->get_user_row($index);
 		if (!$this->form_validation->run()) // validation hasn't been passed
 		{	
 			
-			$row['group_data']=$this->model_user->get_group();
+			$row['group_data']=$this->group->get_group();
 			$data['content']=$this->load->view('user_edit',$row,true);
 			$data['title']="編輯使用者";
 			$this->load->view('admin_temp',$data);
@@ -265,9 +268,9 @@ class AccountController extends CI_Controller {
 						);	
 						
 						
-				if ($this->model_user->update_user($index,$form_data) == TRUE) // the information has therefore been successfully saved in the db
+				if ($this->user->update_user($index,$form_data) == TRUE) // the information has therefore been successfully saved in the db
 				{
-						redirect('user/users_table');
+						redirect('accountController/users_table');
 				}
 				else //!!!if failed to update DB 
 				{
@@ -280,7 +283,7 @@ class AccountController extends CI_Controller {
 	{
 		$this->auth_check('admin');
 		$deleted = $_POST["id"];
-		$this->model_user->delete_user($deleted);
+		$this->user->delete_user($deleted);
 	}
 
 	private function auth_check($allow_lvl){
@@ -292,7 +295,7 @@ class AccountController extends CI_Controller {
 					redirect('/form/restricted');
 				break;
 			case 'admin':
-				if(!$this->session->userdata('is_admin'))
+				if($this->session->userdata('group_index')!=1)
 					redirect('/form/restricted');
 
 				break	;
